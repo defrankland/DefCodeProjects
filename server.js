@@ -3,7 +3,17 @@ var express = require('express'),
 	http = require('http'),
 	path = require('path'),
   mongoskin = require('mongoskin'),
-  dbUrl = process.env.MONGOHQ_URL || 'mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/defcodeprojects',
+  // default to a 'localhost' configuration:
+  dbUrl = '127.0.0.1:27017/YOUR_APP_NAME'
+  // if OPENSHIFT env variables are present, use the available connection info:
+  if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+    dbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+    process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+    process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+    process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+    process.env.OPENSHIFT_APP_NAME;
+  }
+
   db = mongoskin.db(dbUrl, {safe: true}),
   collections = {
   projects: db.collection('projects')
