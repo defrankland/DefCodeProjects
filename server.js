@@ -42,7 +42,7 @@ if (typeof ip === "undefined") {
 };
         
 app.set('port', port);
-app.set('ip', ip);
+app.set('ip', port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
