@@ -31,8 +31,18 @@ app.use(function(req, res, next) {
 });
 
 // Express.js configurations
-app.set('port', process.env.PORT.OPENSHIFT_NODEJS_PORT || 8080);
-app.set('domain', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
+
+var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '8080'); 
+var ip = process.env.OPENSHIFT_NODEJS_IP;
+if (typeof ip === "undefined") {
+    //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
+    //  allows us to run/test the app locally.
+    console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
+    ip = "127.0.0.1";
+};
+        
+app.set('port', port);
+app.set('ip', ip);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -64,7 +74,7 @@ app.all('*', function(req, res) {
 })
 
 var boot = function () {
-  server.listen(app.get('port'), function(){
+  server.listen(app.get('port'), app.get('ip'), function(){
     console.info('Express server listening on port ' + app.get('port'));
   });
 }
