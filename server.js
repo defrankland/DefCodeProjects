@@ -31,7 +31,8 @@ app.use(function(req, res, next) {
 });
 
 // Express.js configurations
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT.OPENSHIFT_NODEJS_PORT || 8080);
+app.set('domain', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 

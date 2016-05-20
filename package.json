@@ -1,7 +1,7 @@
 {
   "name": "def-code-projects",
   "version": "0.0.1",
-  "main": "dcp-app.js",
+  "main": "server.js",
   "directories": {
     "test": "tests"
   },
