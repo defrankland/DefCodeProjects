@@ -1,0 +1,11 @@
+mixin TagList(selectedProject)
+ p
+  .line
+  table
+    th 
+      strong Tags
+    tr
+      each tag, index in selectedProject.tag
+        tr
+          td
+            a.tagButton=tag

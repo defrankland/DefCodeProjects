@@ -1,0 +1,102 @@
+[
+
+  {
+    "index": 13,
+    "name": "Datasheet Viewer",
+    "description": "A Spring Framework project for collecting and viewing datasheets.",
+    "url": "projects/DatasheetViewer",
+    "tag": ['Java', 'Spring-Framework', 'Mongo-DB', 'Gradle']
+  },
+  {
+    "index": 12,
+    "name": "Bottling Plant RDBMS Spec",
+    "description": "Design and implementation of an Oracle DB for a bottling plant.",
+    "url": "projects/BottlingPlantRdbmsSpec",
+    "tag": ['Oracle-Sql', 'Database-Design', 'Entity-Relationship-Diagram']
+  },
+  {
+    "index": 11,
+    "name": "Software Testing Report",
+    "description": "Test report for unit, integration, and system tests performed on the open-source AstroGrep software.",
+    "url": "projects/SoftwareTestingReport",
+    "tag": ['Visual-Studio', 'C#', 'Unit-Testing'] 
+  },
+  {
+    "index": 10,
+    "name": "MallMapper UI Design",
+    "description": "UI design for a mall-mapping application.",
+    "url": "projects/MallMapperUiDesign",
+    "tag": ['UI-Design', 'UX-Design']
+  },
+  {
+    "index": 9,
+    "name": "Rom Programmer",
+    "description": "read a binary (S-Rec concrete implementation provided) and send to external device.",
+    "url": "projects/RomProgrammer",
+    "tag": ['Java']  
+  },
+  {
+    "index": 8,
+    "name": "Grain Synthesizer",
+    "description": "Runs grain synthesis on a wav file to create a 'stretching' effect on the playback of the selected portion of the file. Java, JNI.",
+    "url": "projects/GrainSynthesizer",
+    "tag": ['Java', 'JNI', 'Signal-Processing']
+  },
+  {
+    "index": 7,
+    "name": "SequencerTremolo",
+    "description": "A tremolo with a programmable sequencer",
+    "url": "projects/SequencerTremolo",
+    "tag": ['Arduino']
+  },
+  {
+    "index": 6,
+    "name": "jVSTwRapper Introduction",
+    "description": "Building VST plugins with Java",
+    "url": "projects/jVSTwRapperIntroduction",
+    "tag": ['Java', 'VST-Plug-in', 'Signal-Processing']
+  },
+  {
+    "index": 5,
+    "name": "n-BandEQView",
+    "description": "FFT with 10-band display (VST plugin)",
+    "url": "projects/n-BandEQView",
+    "tag": ['Java', 'VST-Plug-in', 'Signal-Processing']
+  },
+  {
+    "index": 4,
+    "name": "Java/Arduino UDP Pin State Monitor",
+    "description": "An Arduino UDP server & Java web start client",
+    "url": "projects/Java_ArduinoUdpPinStateMonitor",
+    "tag": ['Java', 'Real-Time', 'UDP']
+  },
+  {
+    "index": 3,
+    "name": "USB Custom Driver",
+    "description": "USB custom device driver for windows with Java UI for testing. Java, JNI, Mbed, C++",
+    "url": "projects/USBCustomDriver",
+    "tag": ['Java', 'C++', 'JNI', 'Embedded', 'mbed', 'USB'] 
+  },
+  {
+    "index": 2,
+    "name": "RotaryEncoderBus",
+    "description": "Multiple encode/switch input using only 2 interrupt pins",
+    "url": "projects/RotaryEncoderBus",
+    "tag": ['Arduino']
+  },
+  {
+    "index": 1,
+    "name": "ADCsignal",
+    "description": "Demo 'high-speed' ADC signal processing with Arduino",
+    "url": "projects/ADCsignal",
+    "tag": ['Arduino', 'Signal-Processing']
+  },
+  {
+    "index": 0,
+    "name": "DACsignal",
+    "description": "Demo for outputting to external DAC",
+    "url": "projects/DACsignal",
+    "tag": ['Arduino', 'Signal-Processing']
+  }
+
+]

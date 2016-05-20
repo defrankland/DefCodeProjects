@@ -1,0 +1,55 @@
+
+script(src="public/js/lib/jquery.js")
+script(src="public/js/lib/jquery.dropotron.min.js")
+script(src="public/js/lib/skel.min.js")
+script(src="public/js/lib/skel-viewport.min.js")
+script(src="public/js/lib/util.js")
+script(src="public/js/main.js")
+script(src="public/js/dcp-apis.js")
+
+link(rel="stylesheet", href="public/css/main.css")
+link(rel="icon" href="public/img/dcpicon.png")
+
+doctype html
+html
+  head
+    title DEF Code Projects
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+  body(onload="addProjectList()")
+    #page-wrapper
+      #header-wrapper
+        #header.container
+          h1#logo DEF Code Projects
+          p Projects by Dan Frankland
+          nav#nav
+            ul
+              li
+                a.icon.fa-cog(href='#')
+                  span Menu
+                ul
+                  li
+                    a.icon.fa-home(href='/')  Home
+                  li
+                    a.icon.fa-question(href='/About')  About
+      // Main
+      #main-wrapper
+        #main.container
+          .row
+            // Sidebar
+            #sidebar.4u(class='12u(mobile)')
+              section
+                ul#projectSidebarList
+                    //each project, index in projects
+                    //               a.button.icon.fa-file(href="/#{project.name}")=project.name
+            // Content
+            #projectContent.8u(class='12u(mobile) important(mobile)')
+                 |!{projectHtml} 
+      // Footer
+      #footer-wrapper
+        ul.links
+            li  2016. Dan Frankland. HTML Design adapted from: 
+              a(href='http://html5up.net') HTML5 UP
+
+          
+

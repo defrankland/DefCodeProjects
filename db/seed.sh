@@ -1,0 +1,1 @@
+mongoimport --db def-projects --collection projects --file ./db/projects.json --jsonArray
