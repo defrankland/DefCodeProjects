@@ -19,7 +19,6 @@ var session = require('express-session'),
 
 //App code	
 var app = express();
-var server = http.createServer(app);
 
 app.locals.appTitle = 'DEF Code Projects';
 
@@ -42,7 +41,8 @@ if (typeof ip === "undefined") {
 };
         
 app.set('port', port);
-app.set('ip', port);
+var server = http.createServer(app);
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
