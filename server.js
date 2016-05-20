@@ -4,7 +4,7 @@ var express = require('express'),
 	path = require('path'),
   mongoskin = require('mongoskin'),
   // default to a 'localhost' configuration:
-  dbUrl = '127.0.0.1:27017/YOUR_APP_NAME'
+  dbUrl = '127.0.0.1:27017/defcodeprojects'
   // if OPENSHIFT env variables are present, use the available connection info:
   if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
     dbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
