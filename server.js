@@ -3,7 +3,7 @@ var express = require('express'),
 	http = require('http'),
 	path = require('path'),
   mongoskin = require('mongoskin'),
-  dbUrl = process.env.MONGOHQ_URL || 'mongodb://@localhost:27017/def-projects',
+  dbUrl = process.env.MONGOHQ_URL || 'mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/defcodeprojects',
   db = mongoskin.db(dbUrl, {safe: true}),
   collections = {
   projects: db.collection('projects')
@@ -31,8 +31,8 @@ app.use(function(req, res, next) {
 
 // Express.js configurations
 
-var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '8080'); 
-var ip = process.env.OPENSHIFT_NODEJS_IP;
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080 
+var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 if (typeof ip === "undefined") {
     //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
     //  allows us to run/test the app locally.
@@ -41,6 +41,7 @@ if (typeof ip === "undefined") {
 };
         
 app.set('port', port);
+app.set('ip', ip);
 var server = http.createServer(app);
 
 app.set('views', path.join(__dirname, 'views'));
