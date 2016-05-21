@@ -6,16 +6,17 @@ var express = require('express'),
 
 
 // default to a 'localhost' configuration:
-var dbUrl = '127.0.0.1:27017/defcodeprojects';
+var dbUrl = 'mongodb://127.0.0.1:27017/defcodeprojects';
 // if OPENSHIFT env variables are present, use the available connection info:
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
-  dbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  dbUrl = 'mongodb://' +
+  process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
   process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
   process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
   process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
   process.env.OPENSHIFT_APP_NAME;
 }
-console.log("Connecting to: "+ dbUrl)
+
 var db = mongoskin.db(dbUrl, {safe: true})
 var collections = {
   projects: db.collection('projects')
@@ -23,8 +24,7 @@ var collections = {
 
 	
 // Express.js Middleware
-var session = require('express-session'),
-  logger = require('morgan'),
+var logger = require('morgan'),
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
@@ -65,7 +65,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser('3CCC4ACD-6ED1-4844-9217-82131BDCB239'));
-app.use(session({secret: '2C44774A-D649-4D44-9535-46E296EF984F'}))
 app.use(methodOverride());
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
