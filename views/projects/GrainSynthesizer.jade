@@ -1,6 +1,39 @@
 include TagsList
 
-h1 Please select a project.
-
+h1 Grain Synthesizer
+div
+  br
+  <strong> Platform: </strong>
+    div Windows
+  br
+  div <strong> Description: </strong>
+      .line Runs grain synthesis on a wav file to create a "stretching" effect on the playback of the 
+        |selected portion of the file.
+      .line This is a simple "granular" (or "grain") synthesizer project in Java. 
+      .line I created this project while reviewing techniques for simulating car engine sounds in racing video games. 
+      .line It wouldn't create a realistic effect to simply play back sound files, rather the engine sound needs to react 
+        | immediately to changes in user input (e.g. as soon as the "throttle" button is released, the engine sound 
+        | should react by decreasing in pitch like a real car would). I came across a few projects using the grain 
+        |synthesizer approach and created this code to test it out.
+      br
+      .line A screenshot of the GUI is below. The sliders correspond to a grain and adjust the sample position in the file. 
+        |The grain length and other parameters can be adjusted to maximize the fun!
+      br  
+      img(border='0', href='/public/img/grainsynth1.JPG', src='/public/img/grainsynth1.JPG', style="max-width:100%; max-height:100%;", target="_blank")
+      br
+      img(border='0', href='/public/img/grainsynth2.JPG', src='/public/img/grainsynth2.JPG', style="max-width:100%; max-height:100%;", target="_blank")
+  br
+  div The wav playback is based on the source at the following link:
+  a(href='https://www.openhub.net/p/libstk',   target='_blank', rel='nofollow') LibStk
+  br
+  br
+  a(href='./public/projects/GrainSynthesizer.zip') Download source
 
   +TagList(selectedProject)
+  
+  
+
+
+
+
+

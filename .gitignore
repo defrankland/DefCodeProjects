@@ -48,3 +48,4 @@ Temporary Items
 
 #ignore directories
 node_modules/
+public/projects

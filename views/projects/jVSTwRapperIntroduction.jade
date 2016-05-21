@@ -1,6 +1,236 @@
 include TagsList
 
-h1 Please select a project.
-
+h1 Rom Programmer
+div
+  br
+  div <strong> Description: </strong>
+  br
+  p building VST plugins with Java  
+  
+  h1 <strong> Description: </strong>
+  h2 jVSTwRapper installation:
+  div 1. Download the latest version of jVSTwRapper software 
+  div 2. When the download completes, copy into the VST directory in the host program (for FL the directory is C:\Program Files\Image-Line\FL Studio 11\Plugins\VST\jVSTwRapper-Release-1.0beta)
+  div 3. extract the files. 
+  div 4. Launch the host program. **Make sure to launch AFTER extracting, or else the plugin may not load correctly. 
+  div 5. add the example JayDLay effect to a track to make sure everything is working.
+  
+  h2 Building An Effect Plugin:
+  div Before attempting to write a plugin, take a look at Steinberg's VST documentation.You will find that VST contains a set of abstract methods that need to be inherited and modified for your use. 
+    |The documentation for VST v2.0 has some great examples of the program structure:
+  br
+  a(href='http://jvstwrapper.sourceforge.net/vst20spec.pdf', target='_blank', rel='nofollow') jVSTwRapper On SourceForge
+  br
+  p The most important parts of the VST API are as follows (Note that the jVSTwRapper API uses the same class and member names as the VST API):
+  
+  div -AudioEffectX - The base class / constructor name
+  div -resume() - method used to initialize variables, etc. at launch time
+  div -setSampleRate() - method used to set sample rate at launch time
+  div -processReplacing() - method where audio buffer frames are processed
+  div -getParameter() - send parameter values to the host program
+  div -setParameter() - set variables within the plugin program based on values in the GUI
+  div -updateDisplay() - update the GUI
+  div -dispatcher() - collect and dispatch GUI-based events (mouse(), key(), etc)
+  
+  h2 jVSTwRapper Layout:
+  div Check out the files that you have unzipped for jVSTWrapper. Most importantly, you have:
+  div    -jVSTwRapper-<version>.dll
+  div    -jVSTwRapper-<version>.jar
+  div    -jVSTwRapper-<version>.ini
+  
+  p Since VST is written in C++, the .dll is needed to map the Java functions into the VST host. The .jar file contains your extension of the abstract VST methods. 
+    |Finally, the .ini file maps the name and details of your plugin for the host program to use.
+  
+  h2 Building a jVSTwRapper Plugin:
+  p The objective of writing a VST plugin comes down to deriving an abstract class, and putting your code into the methods provided 
+    |within that abstract class. We can build one of the example plugins that are included with the jVSTwRapper download, 
+    |just to make sure everything is working on the development side.We need to output the .jar file ffor the project. 
+    
+  h2 part 1 - exporting a JAR file:
+  div 1. Extract and import the examples into Eclipse
+  div 2. In the package viewer, right-click on the package you want to build (I used the DDelay example), and select Export...
+  div 3. In the Export window, select Java>JAR File. Make sure your program is selected, and select the output directory. Click finish. 
+  div 4. Create a new directory with the same name as your plugin 
+  div 5. move the newly-built JAR file to the \VST directory of the host program.  
+  div 6. Copy in all the .jar files included with the jVSTwRapper download (as you would expect, you don't need the javadoc JARs or the jVSTeXamples-1.0beta.jar file).
+  div 7. RE-NAME the .dll and .ini files to THE SAME NAME AS YOUR .JAR FILE
+  
+  h2 Part 2 - editing the .ini file:
+  div 1. Set the PluginClass option to the classpath of your plugin. For DDelay, I have PluginClass=jvst/examples/ddelay/DDelay
+  div 2. Change the PluginUIClass option to point to your plugin. Note: without this option set the host program will load the GUI variables into the native GUI. The DDelay doesn't have a GUI class so it will load with a native GUI, as shown below. 
+  div 3. Set the ClassPath option to contain the path to your JAR file. For DDelay, I have ClassPath={WrapperPath}\jVSTwRapper-1.0beta.jar;{WrapperPath}\DDelay.jar
+  p That's all there is to it!! Now launch the host program and load the plugin. 
+  
+  img(border='0', href='/public/img/jvstDDelayFl.JPG', src='/public/img/jvstDDelayFl.JPG', style="max-width:100%; max-height:100%;", target="_blank")
+  img(border='0', href='/public/img/jvstDDelayReaper.JPG', src='/public/img/jvstDDelayReaper.JPG', style="max-width:100%; max-height:100%;", target="_blank")
+  
+  div Above: The DDelay effect in the native GUI for Fruity Loops (left) and Reaper (right).
+  br
+  h2 Debugging:
+  p Check back into the VST directory and you will see that a <pluginName>_log.txt file has been created. Check this file for an easy method of debugging 
+    |(note, must have IsLoggingEnabled=1 in the .ini file)
+  br
+  br
+  h2 Creating a custom Plugin Effect:
+  p Now that Eclipse is ready to go, we can get to the hard part -- coming up with a good DSP algorithm! My example below isn't exactly a good DSP, but it's simple and serves to illustrate the layout and use of the jVSTwRapper library.
+  .line The example below is a simple volume control. It applies attenuation to the input samples, then sends those samples to the output. The complete example (including source code) can be downloaded below. 
+  .line The volumeLevel variable in the program is a float that ranges between 0.0 and 1.0. So, at the maximum (volumeLevel =1.0) the output will be the full level of the input, and decreasing volumeLevel will attenuate the input. 
+  br
+  br
+  div VST Attenuation Plugin
+  div package jvst.atten;
+  div 
+  div import jvst.wrapper.*;
+  div 
+  div public class atten extends VSTPluginAdapter {
+  div     
+  div  //This index is the position of the control in the GUI
+  div  public final static int VOLUME = 0;
+  div  
+  div  //just one parameter in this program, the volume.
+  div  public static int NUM_PARAMS =  1;
+  div   
+  div  public static String[] PARAM_NAMES = new String[] {
+  div  "Volume"
+  div  };
+  div 
+  div  public static String[] PARAM_LABELS = new String[] {
+  div  ""
+  div  };
+  div  
+  div  private float volumeLevel;
+  div  //default sample rate
+  div  private float sampleRate = 44100;
+  div  
+  div  //NOTE: "Program" refers to the preset that is applied to the effect.
+  div  //Current Program is set to 0 which is the only program (or preset) in this plugin.  
+  div  private int currentProgram = 0;
+  div  
+  div  
+  div  //Constructor
+  div  public atten(long wrapper) {
+  div  super(wrapper);
+  div  log("Construktor atten() START!");
+  div  currentProgram = 0;
+  div 
+  div  //communicate with the host
+  div  this.setNumInputs(1);// mono input
+  div  this.setNumOutputs(1);// mono output
+  div  //this.hasVu(false); //deprecated as of vst2.4
+  div  this.canProcessReplacing(true);//mandatory for vst 2.4!
+  div  this.setUniqueID(9876543);//random unique number registered at steinberg (4 byte)
+  div 
+  div  this.canMono(true); 
+  div  
+  div  //initialize the output volume level
+  div  volumeLevel = 1.0f;
+  div  
+  div  log("Construktor atten() INVOKED!");
+  div  }
+  div  
+  div  
+  div  public float getParameter(int index) {
+  div  float v = 0;
+  div 
+  div      switch (index) {
+  div          case VOLUME:
+  div            v = this.volumeLevel;
+  div            break;
+  div      }
+  div      return v;
+  div  }
+  div  
+  div  public void setParameter(int index, float value) {
+  div  switch (index) {
+  div         case VOLUME:
+  div          volumeLevel = value;
+  div          break;
+  div  }
+  div  }
+  div 
+  div  // Generate / Process the sound!
+  div  public void processReplacing(float[][] inputs, float[][] outputs, int sampleFrames) {
+  div  float[] inBuffer = inputs[0];
+  div  float[] outBuffer = outputs[0];
+  div     
+  div  for (int i = 0; i < sampleFrames; i++) {
+  div  // just have to multiply the input buffer by the volume float value to get the output
+  div  outBuffer[i] = inBuffer[i] * volumeLevel;
+  div  }
+  div     
+  div  } 
+  div   
+  div   
+  div   
+  div  public int canDo(String feature) {
+  div  // the host asks us here what we are able to do
+  div  int ret = CANDO_NO;
+  div  if (feature.equals(CANDO_PLUG_1_IN_1_OUT)) ret = CANDO_YES;
+  div  if (feature.equals(CANDO_PLUG_PLUG_AS_CHANNEL_INSERT)) ret = CANDO_YES;
+  div  if (feature.equals(CANDO_PLUG_PLUG_AS_SEND)) ret = CANDO_YES;
+  div 
+  div  log("canDo: " + feature + " = " + ret);
+  div  return ret;
+  div  }
+  div 
+  div  
+  div  public String getParameterDisplay(int index) {
+  div  String text = "";
+  div  
+  div  switch (index) {
+  div          case VOLUME:
+  div          text = "" + volumeLevel;
+  div          break;
+  div  }
+  div  return text;
+  div  }
+  div 
+  div  public String getParameterLabel(int index) {
+  div    if (index < PARAM_LABELS.length)
+  div      return PARAM_LABELS[index];
+  div    return "";
+  div  }
+  div 
+  div  public String getParameterName(int index) {
+  div    if (index < PARAM_NAMES.length)
+  div      return PARAM_NAMES[index];
+  div    return "param: " + index;
+  div  }
+  div 
+  div  
+  div 
+  div   
+  div    //Other methods that need to be re-defined from the base class
+  div    public String getProductString() {return "atten";}
+  div  public String getEffectName() {return "atten";}
+  div  public int getProgram() {return currentProgram;}
+  div  public String getProgramName() {return "program " + currentProgram;}
+  div  public String getProgramNameIndexed(int category, int index) {return "program: cat: " + category + ", " + index;}
+  div  public String getVendorString() { return "jvstwrapper"; }
+  div  public int getNumParams() {return NUM_PARAMS;}
+  div  public int getNumPrograms() {return 1;} //return the number of preset programs (or presets) the plugin supports
+  div  public boolean setBypass(boolean value) {return false;}//do not support soft bypass!
+  div    public void setSampleRate(float sampleRate) { this.sampleRate = sampleRate;}
+  div    public void setProgram(int index) {}
+  div  public void setProgramName(String name) {}
+  div  
+  div  public int getPlugCategory() {
+  div    log("getPlugCategory");
+  div    return PLUG_CATEG_EFFECT;
+  div  }
+  div  
+  div  public boolean string2Parameter(int index, String value) {
+  div    try {
+  div      if (value != null) this.setParameter(index, Float.parseFloat(value));
+  div      return true;
+  div    }
+  div    catch(Exception e) {   //ignore
+  div      return false;
+  div    }
+  div  }
+  div } 
+  
+  br
+  a(href='./public/projects/atten.zip') Download source
 
   +TagList(selectedProject)

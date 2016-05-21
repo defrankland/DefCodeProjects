@@ -1,6 +1,14 @@
 include TagsList
 
-h1 Please select a project.
-
+h1 Rom Programmer
+div
+  br
+  div <strong> Description: </strong>
+      .line read a binary (S-Rec concrete implementation provided) and send to external device. 
+      .line This project currently reads payload data from an S-Record file and prepares the data to transfer. 
+        |Currently supports srec files containing only 16-bit addresses.
+      .line The Eclipse project can be downloaded below, including unit tests (JUnit). 
+  br
+  a(href='./public/projects/RomProgrammer.zip') Download source
 
   +TagList(selectedProject)

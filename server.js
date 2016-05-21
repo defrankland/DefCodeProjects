@@ -6,7 +6,7 @@ var express = require('express'),
 
 
 // default to a 'localhost' configuration:
-var dbUrl = 'mongodb://127.0.0.1:27017/defcodeprojects';
+var dbUrl = 'mongodb://127.0.0.1:27017/def-projects';
 // if OPENSHIFT env variables are present, use the available connection info:
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   dbUrl = 'mongodb://' +

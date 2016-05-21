@@ -1,6 +1,29 @@
 include TagsList
 
-h1 Please select a project.
-
+h1 Rom Programmer
+div
+  br
+  div <strong> Description: </strong>
+  p An Arduino UDP server & Java web start client
+  br
+  div <strong> Project Overview: </strong>
+  div An Arduino UDP server with a Java client. The Arduino pin states are sent to UDP client(s) and displayed in the Java GUI. 
+  br
+  div I decided to post this project as the base for a useful real-time system monitoring package. I even decided to go with a cheesy SCADA-style GUI layout! This network configuration is similar to many I have seen in professional systems, and it provides a reliable way to connect display clients to a real-time data controller. Of course, having your controller function as a web server can slow down the system. I have limited the number of clients to five for my Arduino server. Also remember to adjust the firewall settings for the port in use, as well as managed network equipment.  
+  br
+  div The Arduino listens on a local UDP port for incoming client requests. When a request is received, it adds the client to a list of connected clients. The connection terminates on timeout. 
+  br
+  div Obviously, the ideal deployment for this project would be a Java Web Start application that launches directly from an http server on the arduino. Unfortunately I don't have an Arduino SD shield on hand, so storing the .jar file on the Arduino isn't an option for me. However, the project download includes a .jnlp file, which I have configured to run from this site. You could easily adapt this code and .jnlp file to launch directly from the Arduino.   
+  br
+  img(border='0', href='/public/img/udpArduinoGui.JPG', src='/public/img/udpArduinoGui.JPG', style="max-width:100%; max-height:100%;", target="_blank")
+  br
+  br
+  a(href='./public/projects/Java_ArduinoPinStateMonitor/PinStatesUdpArduinoSketch.zip') Arduino Sketch
+  br
+  a(href='./public/projects/Java_ArduinoPinStateMonitor/UdpClient.jar') UdpClient
+  br
+  a(href='./public/projects/Java_ArduinoPinStateMonitor/UdpClient.jnlp') UdpClient Java Web Start
+  br
+  a(href='./public/projects/Java_ArduinoPinStateMonitor/UdpClient.zip') UdpClient Source
 
   +TagList(selectedProject)

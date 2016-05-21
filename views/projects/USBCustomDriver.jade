@@ -1,6 +1,27 @@
 include TagsList
 
-h1 Please select a project.
-
+h1 Rom Programmer
+div
+  br
+  div <strong> Description: </strong>
+  p USB custom device driver for windows with Java UI for testing.
+  
+  h2 Project includes: 
+  br
+  div -Windows custom USB driver (.inf file)
+  br
+  div -Freescale FRDM K64F code, compiled using mbed, with mbed USB library file changes to support custom USB endpoints. 
+  br
+  div -Java/JNI project to communicate using the custom USB driver
+  br
+  div -Simple Java UI that sends commands to turn on lights on the board, and indicate which lights are on (button background color changes when the LED is on).
+  br
+  h2 usage: 
+  p Enter the VID and PID, then send to device by clicking a button.  
+  br
+  img(border='0', href='/public/img/grainsynth1.JPG', src='/public/img/CustomUsbDriverGui.JPG', style="max-width:100%; max-height:100%;", target="_blank")
+  br
+  br
+  a(href='./public/projects/RomProgrammer.zip') Download source
 
   +TagList(selectedProject)

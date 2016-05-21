@@ -1,6 +1,64 @@
 include TagsList
 
-h1 Please select a project.
+h1 Sequencer Tremolo
+div
+  br
+  div <strong> Description: </strong>
+      .line a tremolo with a programmable sequencer
+  br
+  div <strong> Project Overview: </strong>
+    p An n-step sequencer similar to that found on many synthesizers. It provides user inputs to enable/disable pulses in n steps, 
+      |as well as the length of time for each step. Once the control loop processes all the steps it returns to the beginning and 
+      |repeats. This project also provides a tap tempo input. 
+      .line The example uses an eight-step sequence.
+      .line One rotary encoder is used to set the time for all eight pulses.
+      .line An LCD is used to monitor the delay time for each sequence step. It shows pulse ON time and OFF time in milliseconds. 
+        |It also shows the selected pulse. A new pulse is selected by pressing one of the switches.
+      .line The pulse time displayed on the LCD is adjusted by turning a 2nd "time adjust" encoder. 
+      .line Finally, the tap tempo switch allows the currently selected pulse time to be adjusted by tapping a switch at the desired tempo. 
+        |At least two taps are required to change the pulse time by this method. 
+      .line The code provides class definitions for the rotary encoder, debounced switch, and encoder bus objects. The encoder bus describes 
+        |all of the devices hooked up to the interrupt pins associated with that particular encoder bus. The initialize() function expects two 
+        |interrupt pins (for the arduino uno, the two interrupt pins available are INT0 and INT1):
+  div //start encoder interrupt pins
+  div EncoderBus.initialize(INT0, INT1);
+  div 
+  div Truth table for the rotary encoders:
+  div /**********************************************************************************************
+  div       A|B      A|B                         A_FALL, B_FALL, A_RISE, B_RISE ===> increase
+  div       ===      ===     Order of events:                   ~~~OR~~~~
+  div       0|1      1|0                         B_FALL, A_FALL, B_RISE, A_RISE ===> decrease
+  div       0|0      0|0
+  div       1|0      0|1
+  div       1|1      1|1 
+  div **********************************************************************************************/
+  
+  p Here, A is the state of the INT0 interrupt pin, and B is the state of the INT1 interrupt pin. I am using a quadrature rotary encoder, 
+    |which means that one "click" will cause four pulses to be detected as shown in the truth table above.
+    .line My design has multiple rotary encoders and switches hooked up to the two interrupt pins of the encoder bus. 
+      |If any encoder or switch is operated, the interrupt code will be triggered. How can the actual device that has operated be determined? 
+      |Simple! Just hook up one of the encoder/switch pins to its own designated digital pin. If this pin's state changes, then you 
+      |know that it was this encoder/switch that has been operated. Of course, this means that operating multiple encoders/switches at the same 
+      |time will not work. But as the truth table above shows, we are looking for a specific sequence of rises/falls to determine that the user 
+      |input has operated successfully. So if a combination of user inputs occurs at the same time, the state of the encoders/switches in the program 
+      |logic will most likely not be altered. Likewise, the switches are setup to operate on "button up", so that when the button is released the 
+      |switch operation will complete.  
+  
+  div <strong> Design Notes: </strong>
+  br
+  div 1. Adjustable max number of pulses, each with its own time base
+  div 2. program the time base by selecting the pulse number, then the on time / off time
+  div 3. one encoder is used to set the on/off time for any selected pulse
+  div 4. choose the selected pulse number with a push button (debounced normally open)
+  div 5. can set the number of pulses to use, between 1 and MAX_PULSES
+  br
+  div <strong> Specs: </strong>
+  br
+  p The Arduino code ultimately determines the state of external muting circuit. The muting circuit is in itself an extensive topic to cover. 
+    |The consensus seems to be that either a CMOS or JFET device is the best way to go. I tested with a JFET design.
+  .line The main drawback of the JFET design is that it requires somewhat strange operating voltages. These can be provided using a DC-DC converter. 
 
+  br
+  a(href='./public/projects/SequencerTremolo.zip') Download source
 
   +TagList(selectedProject)
