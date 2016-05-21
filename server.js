@@ -2,22 +2,25 @@ var express = require('express'),
   routes = require('./routes'),
 	http = require('http'),
 	path = require('path'),
-  mongoskin = require('mongoskin'),
-  // default to a 'localhost' configuration:
-  dbUrl = '127.0.0.1:27017/defcodeprojects',
-  // if OPENSHIFT env variables are present, use the available connection info:
-  if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
-    dbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
-    process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
-    process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
-    process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
-    process.env.OPENSHIFT_APP_NAME;
-  },
+  mongoskin = require('mongoskin');
 
-  db = mongoskin.db(dbUrl, {safe: true}),
-  collections = {
+
+// default to a 'localhost' configuration:
+var dbUrl = '127.0.0.1:27017/defcodeprojects';
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  dbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+
+var db = mongoskin.db(dbUrl, {safe: true})
+var collections = {
   projects: db.collection('projects')
 };
+
 	
 // Express.js Middleware
 var session = require('express-session'),
