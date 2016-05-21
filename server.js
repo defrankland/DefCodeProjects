@@ -15,7 +15,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
   process.env.OPENSHIFT_APP_NAME;
 }
-
+console.log("Connecting to: "dbUrl")
 var db = mongoskin.db(dbUrl, {safe: true})
 var collections = {
   projects: db.collection('projects')
